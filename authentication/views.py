@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.contrib.auth import login
+from django.contrib.auth import login, get_user_model
 from rest_framework import generics, permissions
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
@@ -11,8 +12,8 @@ from .serializers import UserSerializer, RegisterSerializer
 class RegisterAPI(generics.GenericAPIView):
     serializer_class = RegisterSerializer
 
-    def post(self, requset, *args, **kwargs):
-        serializer = self.get_serializer(data=requset.data)
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         return Response({
@@ -30,3 +31,5 @@ class LoginAPI(KnoxLoginView):
         user = serializer.validated_data['user']
         login(request, user)
         return super(LoginAPI, self).post(request, format=None)
+
+
