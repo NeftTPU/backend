@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Collection, Pattern, Pull, Image
+from .models import Collection, Pool, Image
 
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -8,15 +8,9 @@ class CollectionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PatternSerializer(serializers.ModelSerializer):
+class PoolSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Pattern
-        fields = '__all__'
-
-
-class PullSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Pull
+        model = Pool
         fields = '__all__'
 
 
