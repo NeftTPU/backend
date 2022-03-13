@@ -1,4 +1,5 @@
 from ..models import Pool
+import os
 
 
 class PoolService:
@@ -18,5 +19,7 @@ class PoolService:
         model.save()
 
         model.collections.add(*data.getlist('collection_ids[]'))
+
+        os.system("python manage.py generate_pool "+str(model.id))
 
         return model
