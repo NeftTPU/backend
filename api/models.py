@@ -19,6 +19,8 @@ class Collection(models.Model):
     date_created = models.DateField(auto_now_add=True)
     height = models.IntegerField()
 
+    objects = models.Manager()
+
     def __str__(self):
         return self.title
 
@@ -31,6 +33,8 @@ class Layer(models.Model):
     title = models.CharField(max_length=255)
     collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
     image = models.ForeignKey(Image, on_delete=models.RESTRICT)
+
+    objects = models.Manager()
 
     class Meta:
         verbose_name = 'Слой'
@@ -45,6 +49,8 @@ class Pool(models.Model):
 
     collections = models.ManyToManyField(Collection)
     images = models.ManyToManyField(Image)
+
+    objects = models.Manager()
 
     def __str__(self):
         return self.title

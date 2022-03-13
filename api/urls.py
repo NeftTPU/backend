@@ -22,5 +22,10 @@ urlpatterns = [
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('images/', views.store_image),
-    path('images/<int:id>', views.get_image),
+    path('collections/', views.CollectionAPIView().as_view()),
+    re_path(r'^collections/(?P<id>[0-9]+)$', views.CollectionAPIView.as_view()),
+    path('layers/', views.LayerAPIView().as_view()),
+    re_path(r'^layers/(?P<id>[0-9]+)$', views.LayerAPIView.as_view()),
+    path('pools/', views.PoolListAPIView().as_view()),
+    re_path(r'^pools/(?P<id>[0-9]+)$', views.PoolAPIView.as_view()),
 ]
