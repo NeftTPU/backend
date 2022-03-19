@@ -1,9 +1,13 @@
+import io
+
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from api.models import Pool, Collection, Layer, Image
 from PIL import Image as Img
 from django.utils.crypto import get_random_string
+from django.core.files.images import ImageFile
 import time
+import os
 
 
 class Command(BaseCommand):
@@ -19,15 +23,16 @@ class Command(BaseCommand):
 
         collections = Collection.objects.filter(pool=pool).all().order_by('height')
 
-        n = collections.len()
+        n = len(collections)
         collections_sizes = []
         total = 1
+
+        for collection in collections:
+            collections_sizes.append(len(Layer.objects.filter(collection=collection).all()))
+
         for s in collections_sizes:
             total *= s
         dtotal = total
-
-        for collection in collections:
-            collections_sizes.append(Layer.objects.filter(collection=collection).all().len())
 
         generator_map = []
         for i in range(len(collections_sizes)):
@@ -47,21 +52,22 @@ class Command(BaseCommand):
         for i in range(total):
             result = Image()
             for j in range(len(collections_sizes)):
-                layer = Layer.objects.filter(collection=collection[j]).all()[generator_map[i][j]]
+                layer = (Layer.objects.filter(collection=collections[j]).all())[generator_map[j][i]]
                 layer_image = Image.objects.get(layer=layer)
                 if j == 0:
                     image = Img.open(layer_image.file)
                 else:
                     new_layer = Img.open(layer_image.file)
-                    image = Img.paste(new_layer, (0,0))
+                    image.paste(new_layer, (0, 0))
 
-            image_name = str(time.time()) + '_' + get_random_string()
+            output = io.BytesIO()
+            image.save(output, format='PNG')
+            output.seek(0)
+            image_name = str(time.time()) + '_' + 'result.png'
             result.name = image_name
-            result.file = image
+            result.file.save(image_name, output, save=False)
             result.save()
             pool.images.add(result)
 
         pool.is_generated = True
         pool.save()
-
-

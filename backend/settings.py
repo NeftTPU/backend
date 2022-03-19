@@ -98,7 +98,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'neft_db',
         'USER' : 'postgres',
-        'PASSWORD' : 'postgre',
+        'PASSWORD' : 'postgres',
         'HOST' : '127.0.0.1',
         'PORT' : '5432',
     }
