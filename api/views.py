@@ -1,5 +1,6 @@
 import json
 
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from rest_framework import generics, mixins
 from .serializers import *
@@ -9,7 +10,7 @@ from .services import ImageService, CollectionService, LayerService, PoolService
 def json_response(data):
     return HttpResponse(json.dumps(data), content_type="application/json")
 
-
+@csrf_exempt
 def store_image(request):
     image_file = request.FILES['image']
     image = ImageService().store(image_file)
