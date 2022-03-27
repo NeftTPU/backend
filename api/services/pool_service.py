@@ -1,6 +1,6 @@
 from ..models import Pool
 import os
-
+import subprocess
 
 class PoolService:
     def getListForUser(self, user):
@@ -20,6 +20,6 @@ class PoolService:
 
         model.collections.add(*data.getlist('collection_ids[]'))
 
-        os.system("python manage.py generate_pool "+str(model.id))
+        subprocess.Popen(["python3 manage.py generate_pool "+str(model.id)])
 
         return model
