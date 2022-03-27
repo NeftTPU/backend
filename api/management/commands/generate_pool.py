@@ -58,7 +58,7 @@ class Command(BaseCommand):
                     image = Img.open(layer_image.file)
                 else:
                     new_layer = Img.open(layer_image.file)
-                    image.paste(new_layer, (0, 0))
+                    image.paste(new_layer, (0, 0), new_layer)
 
             output = io.BytesIO()
             image.save(output, format='PNG')
