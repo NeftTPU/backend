@@ -20,6 +20,6 @@ class PoolService:
 
         model.collections.add(*data.getlist('collection_ids[]'))
 
-        subprocess.Popen(["python3 manage.py generate_pool "+str(model.id)])
+        subprocess.Popen(["python3", "manage.py", "generate_pool", str(model.id)])
 
         return model
